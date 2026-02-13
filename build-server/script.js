@@ -38,13 +38,17 @@ async function init() {
     const fullPath = path.join(distFolder, relativePath);
 
     if (fs.lstatSync(fullPath).isDirectory()) continue;
-
+    console.log("uploading..",relativePath);
+    
     await bucket.upload(fullPath, {
       destination: `__outputs/${PROJECT_ID}/${relativePath}`,
       contentType: mime.lookup(fullPath) ,
     });
+        console.log("uploaded..",relativePath);
+
   }
 
   console.log("done...");
 });
 }
+init();
