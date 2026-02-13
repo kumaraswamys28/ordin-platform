@@ -48,7 +48,7 @@ Thumbs.db
 
 # Docker
 docker-data/
-
+deployment-platform.json
 # Optional: Prisma / DB
 prisma/dev.db
 prisma/*.db
