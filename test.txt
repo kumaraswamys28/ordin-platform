@@ -2,3 +2,5 @@ this is the test
  cloud storage and iam 
  ecr else google artifact registory
  create a repo n artifact registory
+ create a job in cloud and test the image 
+ provide the 1 gb of memory to execute successfully 
