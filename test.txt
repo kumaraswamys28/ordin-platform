@@ -1,3 +1,4 @@
 this is the test
  cloud storage and iam 
  ecr else google artifact registory
+ create a repo n artifact registory
