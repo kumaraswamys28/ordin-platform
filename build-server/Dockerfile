@@ -1,20 +1,26 @@
-FROM ubuntu:focal
+# Use the official Node Alpine image - it's tiny (~50MB)
+FROM node:24-alpine
 
-RUN apt-get update \
-  && apt-get install -y curl ca-certificates \
-  && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-  && apt-get install -y nodejs \
-  && node -v \
-  && npm -v
-RUN apt-get install git -y 
+# 1. Install system dependencies (git, bash, and build tools)
+# We use --no-cache to keep the image small
+RUN apk add --no-cache git bash
+
 WORKDIR /home/app
-COPY main.sh main.sh 
-COPY script.js script.js
-COPY package*.json .
-RUN npm install
 
-RUN chmod +x main.sh
-RUN chmod +x script.js
+# 2. Copy dependency files first to use Docker layer caching
+COPY package*.json ./
+RUN npm install --omit=dev
+
+# 3. Copy the rest of your application
+COPY main.sh .
+COPY deployment-platform.json .
+COPY script.js .
+
+
+# 4. Set permissions
+RUN chmod +x main.sh script.js
+
+# Ensure the output directory exists for the clone
+RUN mkdir -p /home/app/output
 
 ENTRYPOINT [ "/home/app/main.sh" ]
-

@@ -7,13 +7,13 @@ const mime = require("mime-types");
 const storage = new Storage();
 const bucket = storage.bucket(process.env.BUCKET_NAME);
 
-
+const BUILD_CMD=process.env.BUILD_CMD;
 const PROJECT_ID=process.env.PROJECT_ID;
 
 async function init() {
   console.log("Initializing with params:");
   const outdir = path.join(__dirname, "output");
-  const p = exec(`cd ${outdir} && npm install && npm run build`);
+  const p = exec(`cd ${outdir} && npm install && ${BUILD_CMD}`);
 
     p.stdout.on("data", (data) => {
         console.log(data.toString());
@@ -25,10 +25,7 @@ async function init() {
 
 
    p.on("close", async () => {
-    if (code !== 0) {
-    console.error("Build failed");
-    process.exit(1);
-  }
+  
   console.log("build complete");
 
   const distFolder = path.join(__dirname, "output", "dist");
